@@ -5,12 +5,17 @@ public class LevelManger : MonoBehaviour
 
 {
     public GameObject chicken;
-    public Camera mainCamera;      // ©ì¶i¥DÄá¼v¾÷
-    public float minDistance = 2f; // ³Ìµu¶ZÂ÷
-    public float maxDistance = 4f; // ³Ì»·¶ZÂ÷
-    public float horizontalRange = 100.0f; // ¥ª¥k°¾²¾½d³ò
-    public float verticalRange = 100.5f;   // ¤W¤U°¾²¾½d³ò
+    public Camera mainCamera;      // ï¿½ï¿½iï¿½Dï¿½ï¿½vï¿½ï¿½
+    public float minDistance = 2f; // ï¿½Ìµuï¿½Zï¿½ï¿½
+    public float maxDistance = 4f; // ï¿½Ì»ï¿½ï¿½Zï¿½ï¿½
+    public float horizontalRange = 100.0f; // ï¿½ï¿½ï¿½kï¿½ï¿½ï¿½ï¿½ï¿½dï¿½ï¿½
+    public float verticalRange = 100.5f;   // ï¿½Wï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½dï¿½ï¿½
     float shoottime;
+
+    public GameObject pauseMenuUI; // æ‹–é€²ä½ çš„ UI Panel
+    private bool isPaused = false;
+
+
     int HP = 4;
     int status = 0;
     public GameObject ui_start;
@@ -19,15 +24,20 @@ public class LevelManger : MonoBehaviour
     public Text text_hp;
     public float timespace = 2.0f;
     public GameObject ui_shoot;
+
+    public GameObject ui_pause;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        ui_pause.SetActive(false);
         ui_Over.SetActive(false);
         ui_again.SetActive(false);
         text_hp.enabled = false;
         shoottime = Time.time + 2.0f;
         text_hp.text = "HP: " + HP;
-        
+
     }
 
     // Update is called once per frame
@@ -41,13 +51,14 @@ public class LevelManger : MonoBehaviour
             case 1:
                 if (Time.time > shoottime)
                 {
+                    ui_pause.SetActive(true);
                     SpawnEnemy();
                     shoottime = Time.time + timespace;
                     if (timespace > 0.8f)
                     {
                         timespace -= 0.1f;
                     }
-                    
+
                 }
                 ui_shoot.SetActive(true);
                 if (HP <= 0)
@@ -55,6 +66,8 @@ public class LevelManger : MonoBehaviour
                     ui_Over.SetActive(true);
                     ui_again.SetActive(true);
                     ui_shoot.SetActive(false);
+                    ui_pause.SetActive(false);
+
                     status = 2;
                     GameObject[] destroyObj = GameObject.FindGameObjectsWithTag("DestroyOnGameOver");
                     foreach (GameObject obj in destroyObj)
@@ -69,6 +82,13 @@ public class LevelManger : MonoBehaviour
                 break;
 
         }
+
+        // è®“ä½ æŒ‰ Esc éµä¹Ÿèƒ½æš«åœ
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePause();
+        }
+
         //if (status == 1) { 
         //    if (HP > 0) { 
         //        if (Time.time > shoottime)
@@ -83,6 +103,29 @@ public class LevelManger : MonoBehaviour
         //    }
         //}
     }
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            Time.timeScale = 0f;
+            pauseMenuUI.SetActive(true);
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            pauseMenuUI.SetActive(false);
+        }
+    }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1f;
+        pauseMenuUI.SetActive(false);
+    }
+
     public void startGame()
     {
         text_hp.enabled = true;
@@ -99,10 +142,10 @@ public class LevelManger : MonoBehaviour
     {
         if (chicken == null || mainCamera == null) return;
 
-        // ÀH¾÷¶ZÂ÷
+        // ï¿½Hï¿½ï¿½ï¿½Zï¿½ï¿½
         float distance = Random.Range(minDistance, maxDistance);
 
-        // ÀH¾÷¤è¦V°¾²¾¡]¦b«e¤èªº¬Y­Ó½d³ò¤º¡^
+        // ï¿½Hï¿½ï¿½ï¿½ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½]ï¿½bï¿½eï¿½èªºï¿½Yï¿½Ó½dï¿½ò¤º¡^
         Vector3 forward = mainCamera.transform.forward;
         Vector3 right = mainCamera.transform.right;
         Vector3 up = mainCamera.transform.up;
@@ -113,9 +156,9 @@ public class LevelManger : MonoBehaviour
 
         Vector3 spawnPosition = mainCamera.transform.position + forward * distance + offset;
 
-        // ¥Í¦¨¼Ä¤H
+        // ï¿½Í¦ï¿½ï¿½Ä¤H
         Instantiate(chicken, spawnPosition, Quaternion.LookRotation(-forward));
-       
+
     }
     public void paly_again()
     {
@@ -127,5 +170,34 @@ public class LevelManger : MonoBehaviour
         HP = 4;
         status = 1;
         text_hp.text = "HP: " + HP;
+    }
+    public void pause_game()
+    {
+        if (isPaused)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            TogglePause();
+        }
+    }
+
+    public void QuitGame()
+    {
+        ui_Over.SetActive(true);
+        ui_again.SetActive(true);
+        ui_shoot.SetActive(false);
+        ui_pause.SetActive(false);
+        pauseMenuUI.SetActive(false);
+
+        status = 2;
+        GameObject[] destroyObj = GameObject.FindGameObjectsWithTag("DestroyOnGameOver");
+        foreach (GameObject obj in destroyObj)
+        {
+            Destroy(obj);
+        }
+        text_hp.enabled = false;
+        timespace = 2.0f;
     }
 }
