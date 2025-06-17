@@ -5,6 +5,13 @@ public class BulletShooter : MonoBehaviour
     public GameObject bulletPrefab;
     public float bulletSpeed = 10f;
 
+    public AudioClip shootSound;
+    private AudioSource audioSource;
+
+    void Awake()  // 或用 Start() 也可以
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     // �o�g�l�u
     public void Shoot()
     {
@@ -18,5 +25,10 @@ public class BulletShooter : MonoBehaviour
 
         // �۰ʧR���l�u
         Destroy(bullet, 5f);
+
+        if (shootSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(shootSound);
+        }
     }
 }

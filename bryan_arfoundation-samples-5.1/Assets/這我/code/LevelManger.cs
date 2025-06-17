@@ -29,11 +29,14 @@ public class LevelManger : MonoBehaviour
     public GameObject ui_shoot;
 
     public GameObject ui_pause;
+    public AudioSource bgmSource; // 拖背景音樂用的 AudioSource
 
+    public BulletShooter shootManager;  // 拖進有掛 BulletShooter 的物件
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        bgmSource.Play(); // 在遊戲一開始播放背景音樂
 
         pauseMenuUI.SetActive(false);
         ui_pause.SetActive(false);
@@ -61,6 +64,8 @@ public class LevelManger : MonoBehaviour
                 if (Time.time > shoottime)
                 {
                     ui_pause.SetActive(true);
+                    text_score.enabled = true;
+                    text_hp.enabled = true;
                     SpawnEnemy();
                     shoottime = Time.time + timespace;
                     if (timespace > 0.8f)
@@ -197,7 +202,7 @@ public class LevelManger : MonoBehaviour
         text_show_score.enabled = false; // 隱藏分數顯示
         text_score.text = "☠:  " + score;
         score = 0; // 重置分數
-        
+
     }
     public void pause_game()
     {
@@ -240,6 +245,13 @@ public class LevelManger : MonoBehaviour
         timespace = 2.0f;
     }
 
+    public void OnShootButtonClicked()
+    {
+        if (shootManager != null)
+        {
+            shootManager.Shoot();
+        }
+    }
 
 
 }

@@ -126,6 +126,7 @@ MonoBehaviour:
   targetTrans: {fileID: 0}
   bullet: {fileID: 8395345976001687786, guid: 8a4c6c58995c97d4e8dfcfe8e8c8a504, type: 3}
   bulletPosition: {fileID: 7841605332637117478}
+  deathSound: {fileID: 8300000, guid: 00f322d08f528d346982e3e213e2ae3f, type: 3}
 --- !u!54 &5124038085431854259
 Rigidbody:
   m_ObjectHideFlags: 0
