@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7672942839868731695}
   - component: {fileID: 5124038085431854259}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: chicken
   m_TagString: DestroyOnGameOver
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
