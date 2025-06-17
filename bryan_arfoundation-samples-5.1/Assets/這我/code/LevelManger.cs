@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class LevelManger : MonoBehaviour
 
@@ -31,12 +32,23 @@ public class LevelManger : MonoBehaviour
     public GameObject ui_pause;
     public AudioSource bgmSource; // 拖背景音樂用的 AudioSource
 
+    public AudioClip bgmInGame;
+    public AudioClip bgmGameOver;
+    public AudioClip bgmMenu;
+    public AudioClip uiClickSound; // 拖進 UI 點擊音效
+    public string uiAudioTag = "SFX"; // 對應 AudioSource 的 Tag
+
+
     public BulletShooter shootManager;  // 拖進有掛 BulletShooter 的物件
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        bgmSource.Play(); // 在遊戲一開始播放背景音樂
+        PlayBGM(bgmMenu); // 在遊戲一開始播放背景音樂
+
+        RegisterButtonSounds(); // 加這行
 
         pauseMenuUI.SetActive(false);
         ui_pause.SetActive(false);
@@ -55,6 +67,7 @@ public class LevelManger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         switch (status)
         {
             case 0:
@@ -107,6 +120,7 @@ public class LevelManger : MonoBehaviour
     }
     public void TogglePause()
     {
+
         isPaused = !isPaused;
 
         if (isPaused)
@@ -124,6 +138,7 @@ public class LevelManger : MonoBehaviour
 
     public void ResumeGame()
     {
+
         ui_pause.SetActive(true);
         ui_shoot.SetActive(true);
         isPaused = false;
@@ -133,6 +148,7 @@ public class LevelManger : MonoBehaviour
 
     public void startGame()
     {
+        PlayBGM(bgmInGame, 0.6f);
 
         HP = 4;
         score = 0;
@@ -188,6 +204,7 @@ public class LevelManger : MonoBehaviour
     }
     public void play_again()
     {
+
         Time.timeScale = 1f;
         text_hp.enabled = true;
         ui_start.SetActive(false);
@@ -206,6 +223,7 @@ public class LevelManger : MonoBehaviour
     }
     public void pause_game()
     {
+
         if (isPaused)
         {
             ResumeGame();
@@ -218,12 +236,15 @@ public class LevelManger : MonoBehaviour
 
     public void QuitGame()
     {
+
         GameOver();
         // 退出遊戲
     }
 
     void GameOver()
     {
+
+        PlayBGM(bgmGameOver, 0.4f);
         status = 2;
         ui_Over.SetActive(true);
         ui_again.SetActive(true);
@@ -253,5 +274,39 @@ public class LevelManger : MonoBehaviour
         }
     }
 
+    void PlayBGM(AudioClip clip, float volume = 0.5f)
+    {
+        if (bgmSource != null && clip != null)
+        {
+            bgmSource.Stop();
+            bgmSource.clip = clip;
+            bgmSource.volume = volume;
+            bgmSource.Play();
+        }
+    }
+
+    private HashSet<Button> buttonsWithSound = new HashSet<Button>();
+
+    void RegisterButtonSounds()
+    {
+        GameObject sfxPlayer = GameObject.FindGameObjectWithTag(uiAudioTag);
+        if (sfxPlayer == null || uiClickSound == null) return;
+
+        AudioSource audioSource = sfxPlayer.GetComponent<AudioSource>();
+        if (audioSource == null) return;
+
+        // 從 Canvas 下去抓所有 UI 按鈕（包含非啟用）
+        Transform canvasRoot = GameObject.Find("Canvas")?.transform;
+        if (canvasRoot == null) return;
+
+        Button[] buttons = canvasRoot.GetComponentsInChildren<Button>(true);
+
+        foreach (Button btn in buttons)
+        {
+            // 避免重複註冊
+            btn.onClick.RemoveListener(() => audioSource.PlayOneShot(uiClickSound));
+            btn.onClick.AddListener(() => audioSource.PlayOneShot(uiClickSound));
+        }
+    }
 
 }
