@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ChickenManger : MonoBehaviour
 {
@@ -10,12 +11,12 @@ public class ChickenManger : MonoBehaviour
     void Start()
     {
         targetTrans = GameObject.Find("Main Camera").transform;
-        shoottime = Time.time +1.0f;
+        shoottime = Time.time + 1.0f;
     }
 
     // Update is called once per frame
     void Update()
-    {   
+    {
         this.transform.LookAt(targetTrans);
         if (Time.time > shoottime)
         {
@@ -26,6 +27,14 @@ public class ChickenManger : MonoBehaviour
     }
     private void OnMouseDown()
     {
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        return; // 點到 UI，不處理
+        var level = GameObject.Find("Level")?.GetComponent<LevelManger>();
+        if (level != null)
+        {
+            level.AddScore();
+        }
         Destroy(this.gameObject);
+
     }
 }

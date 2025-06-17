@@ -17,12 +17,15 @@ public class LevelManger : MonoBehaviour
 
 
     int HP = 4;
+    int score = 0;
     int status = 0;
     public GameObject ui_start;
     public GameObject ui_Over;
     public GameObject ui_again;
     public Text text_hp;
-    public float timespace = 2.0f;
+    public Text text_score;
+    public Text text_show_score;
+    public float timespace = 2.5f;
     public GameObject ui_shoot;
 
     public GameObject ui_pause;
@@ -31,13 +34,18 @@ public class LevelManger : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
         pauseMenuUI.SetActive(false);
         ui_pause.SetActive(false);
         ui_Over.SetActive(false);
         ui_again.SetActive(false);
         text_hp.enabled = false;
+        text_score.enabled = false;
+        text_show_score.enabled = false;
         shoottime = Time.time + 2.0f;
-        text_hp.text = "HP: " + HP;
+        text_hp.text = "生命值: " + new string('❤', HP);
+        text_score.text = "☠:  " + score;
+
 
     }
 
@@ -64,19 +72,7 @@ public class LevelManger : MonoBehaviour
                 ui_shoot.SetActive(true);
                 if (HP <= 0)
                 {
-                    ui_Over.SetActive(true);
-                    ui_again.SetActive(true);
-                    ui_shoot.SetActive(false);
-                    ui_pause.SetActive(false);
-
-                    status = 2;
-                    GameObject[] destroyObj = GameObject.FindGameObjectsWithTag("DestroyOnGameOver");
-                    foreach (GameObject obj in destroyObj)
-                    {
-                        Destroy(obj);
-                    }
-                    text_hp.enabled = false;
-                    timespace = 2.0f;
+                    GameOver();
                 }
                 break;
             case 2:
@@ -132,16 +128,37 @@ public class LevelManger : MonoBehaviour
 
     public void startGame()
     {
+
+        HP = 4;
+        score = 0;
+
         text_hp.enabled = true;
+        text_score.enabled = true;
+        text_show_score.enabled = false; // 確保分數顯示隱藏
+        text_hp.text = "生命值: " + new string('❤', HP);
+        text_score.text = "☠: " + score;
+
+        ui_shoot.SetActive(true);
         status = 1;
         ui_start.SetActive(false);
+        pauseMenuUI.SetActive(false);
     }
     void hurt()
     {
         HP = HP - 1;
-        text_hp.text = "HP: " + HP;
+        text_hp.text = "生命值: " + new string('❤', HP);
         Debug.Log("HP: " + HP);
+
     }
+
+    public void AddScore(int amount = 1)
+    {
+        score += amount;
+        text_score.text = "☠: " + score;
+        Debug.Log("得分 +" + amount + "，目前分數：" + score);
+    }
+
+
     public void SpawnEnemy()
     {
         if (chicken == null || mainCamera == null) return;
@@ -164,7 +181,7 @@ public class LevelManger : MonoBehaviour
         Instantiate(chicken, spawnPosition, Quaternion.LookRotation(-forward));
 
     }
-    public void paly_again()
+    public void play_again()
     {
         Time.timeScale = 1f;
         text_hp.enabled = true;
@@ -176,7 +193,11 @@ public class LevelManger : MonoBehaviour
         shoottime = Time.time + 2.0f;
         HP = 4;
         status = 1;
-        text_hp.text = "HP: " + HP;
+        text_hp.text = "生命值: " + new string('❤', HP);
+        text_show_score.enabled = false; // 隱藏分數顯示
+        text_score.text = "☠:  " + score;
+        score = 0; // 重置分數
+        
     }
     public void pause_game()
     {
@@ -192,19 +213,33 @@ public class LevelManger : MonoBehaviour
 
     public void QuitGame()
     {
+        GameOver();
+        // 退出遊戲
+    }
+
+    void GameOver()
+    {
+        status = 2;
         ui_Over.SetActive(true);
         ui_again.SetActive(true);
+
+        text_show_score.text = "☠: " + score;
+        text_show_score.enabled = true;
         ui_shoot.SetActive(false);
         ui_pause.SetActive(false);
         pauseMenuUI.SetActive(false);
+        text_hp.enabled = false;
+        text_score.enabled = false;
 
-        status = 2;
         GameObject[] destroyObj = GameObject.FindGameObjectsWithTag("DestroyOnGameOver");
         foreach (GameObject obj in destroyObj)
         {
             Destroy(obj);
         }
-        text_hp.enabled = false;
+
         timespace = 2.0f;
     }
+
+
+
 }
