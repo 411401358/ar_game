@@ -31,6 +31,7 @@ public class LevelManger : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        pauseMenuUI.SetActive(false);
         ui_pause.SetActive(false);
         ui_Over.SetActive(false);
         ui_again.SetActive(false);
@@ -111,6 +112,7 @@ public class LevelManger : MonoBehaviour
         {
             Time.timeScale = 0f;
             pauseMenuUI.SetActive(true);
+            ui_pause.SetActive(false);
         }
         else
         {
@@ -121,6 +123,8 @@ public class LevelManger : MonoBehaviour
 
     public void ResumeGame()
     {
+        ui_pause.SetActive(true);
+        ui_shoot.SetActive(true);
         isPaused = false;
         Time.timeScale = 1f;
         pauseMenuUI.SetActive(false);
@@ -162,10 +166,13 @@ public class LevelManger : MonoBehaviour
     }
     public void paly_again()
     {
+        Time.timeScale = 1f;
         text_hp.enabled = true;
         ui_start.SetActive(false);
         ui_Over.SetActive(false);
         ui_again.SetActive(false);
+        pauseMenuUI.SetActive(false); // 確保暫停畫面不在
+        ui_pause.SetActive(true);     // 恢復暫停按鈕
         shoottime = Time.time + 2.0f;
         HP = 4;
         status = 1;
