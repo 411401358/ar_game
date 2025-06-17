@@ -145,7 +145,7 @@ public class LevelManger : MonoBehaviour
     }
     void hurt()
     {
-        HP = HP - 1;
+        HP = Mathf.Max(0, HP - 1); // 保證 HP 不會小於 0
         text_hp.text = "生命值: " + new string('❤', HP);
         Debug.Log("HP: " + HP);
 
