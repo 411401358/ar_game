@@ -982,8 +982,8 @@ MonoBehaviour:
   timespace: 2
   ui_shoot: {fileID: 2033594104}
   ui_pause: {fileID: 2003905255}
-  bgmSource: {fileID: 2118336135693381541, guid: 0b92b696ea3a9244d8b957dcfc7055bc,
-    type: 3}
+  bgmSource: {fileID: 771120550}
+  shootManager: {fileID: 2025949833}
 --- !u!4 &672336346
 Transform:
   m_ObjectHideFlags: 0
@@ -999,6 +999,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &771120550 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2118336135693381541, guid: 0b92b696ea3a9244d8b957dcfc7055bc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5259770973803821475}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &804415622
 GameObject:
   m_ObjectHideFlags: 0
@@ -1824,6 +1830,22 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 3553904840188630374}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2033594109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033594104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b3aa70c56813e4194207d12ad55043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 6008080675879268019, guid: 1843965b99068df4d8d77a0312fb9ea0,
+    type: 3}
+  bulletSpeed: 30.2
+  shootSound: {fileID: 8300000, guid: 275820d3904a0cc4bb685c597f5e3c05, type: 3}
 --- !u!1001 &3553904840188630374
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1841,7 +1863,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2025949833}
+      objectReference: {fileID: 672336345}
+    - target: {fileID: 6806432589564850232, guid: 662854f4d1cade44b80e9f42ff397ae9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnShootButtonClicked
+      objectReference: {fileID: 0}
+    - target: {fileID: 6806432589564850232, guid: 662854f4d1cade44b80e9f42ff397ae9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LevelManger, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8174942344876410578, guid: 662854f4d1cade44b80e9f42ff397ae9,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1945,7 +1977,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1908111257782491096, guid: 662854f4d1cade44b80e9f42ff397ae9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2033594109}
   m_SourcePrefab: {fileID: 100100000, guid: 662854f4d1cade44b80e9f42ff397ae9, type: 3}
 --- !u!1001 &4584446535654896857
 PrefabInstance:
@@ -2078,6 +2114,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: background_music
       objectReference: {fileID: 0}
+    - target: {fileID: 2118336135693381541, guid: 0b92b696ea3a9244d8b957dcfc7055bc,
+        type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: b2cb3b1d9aecc064dbfa43f220b520bb, type: 3}
+    - target: {fileID: 2118336135693381541, guid: 0b92b696ea3a9244d8b957dcfc7055bc,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b2cb3b1d9aecc064dbfa43f220b520bb, type: 3}
     - target: {fileID: 6722370910442205970, guid: 0b92b696ea3a9244d8b957dcfc7055bc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2540,6 +2586,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Shootmanger
+      objectReference: {fileID: 0}
+    - target: {fileID: 3902495639142234958, guid: 4a5efe58ad5c39b4e9174a896b09d46b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7251725298512849849, guid: 4a5efe58ad5c39b4e9174a896b09d46b,
         type: 3}
