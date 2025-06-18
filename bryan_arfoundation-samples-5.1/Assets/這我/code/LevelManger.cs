@@ -9,8 +9,8 @@ public class LevelManger : MonoBehaviour
     public Camera mainCamera;      // ��i�D��v��
     public float minDistance = 2f; // �̵u�Z��
     public float maxDistance = 4f; // �̻��Z��
-    public float horizontalRange = 100.0f; // ���k�����d��
-    public float verticalRange = 100.5f;   // �W�U�����d��
+    public float horizontalRange = 3.0f; // ���k�����d��
+    public float verticalRange = 2.0f;   // �W�U�����d��
     float shoottime;
 
     public GameObject pauseMenuUI; // 拖進你的 UI Panel
@@ -20,6 +20,7 @@ public class LevelManger : MonoBehaviour
     int HP = 4;
     int score = 0;
     int status = 0;
+    public GameObject ui_start_button;
     public GameObject ui_start;
     public GameObject ui_Over;
     public GameObject ui_again;
@@ -128,6 +129,7 @@ public class LevelManger : MonoBehaviour
             Time.timeScale = 0f;
             pauseMenuUI.SetActive(true);
             ui_pause.SetActive(false);
+
         }
         else
         {
@@ -138,7 +140,16 @@ public class LevelManger : MonoBehaviour
 
     public void ResumeGame()
     {
-
+        PlayBGM(bgmInGame, 0.6f); // 恢復遊戲時播放背景音樂
+        text_hp.enabled = true;
+        text_score.enabled = true;
+        text_show_score.enabled = false; // 確保分數顯示隱藏
+        text_hp.text = "生命值: " + new string('❤', HP);
+        text_score.text = "☠: " + score;
+        ui_start.SetActive(false);
+        ui_start_button.SetActive(false);
+        ui_Over.SetActive(false);
+        ui_again.SetActive(false);
         ui_pause.SetActive(true);
         ui_shoot.SetActive(true);
         isPaused = false;
@@ -162,6 +173,8 @@ public class LevelManger : MonoBehaviour
         ui_shoot.SetActive(true);
         status = 1;
         ui_start.SetActive(false);
+        ui_start_button.SetActive(false);
+        ui_Over.SetActive(false);
         pauseMenuUI.SetActive(false);
     }
     void hurt()
@@ -204,10 +217,11 @@ public class LevelManger : MonoBehaviour
     }
     public void play_again()
     {
-
+        PlayBGM(bgmInGame, 0.6f);
         Time.timeScale = 1f;
         text_hp.enabled = true;
         ui_start.SetActive(false);
+        ui_start_button.SetActive(false);
         ui_Over.SetActive(false);
         ui_again.SetActive(false);
         pauseMenuUI.SetActive(false); // 確保暫停畫面不在
@@ -217,8 +231,9 @@ public class LevelManger : MonoBehaviour
         status = 1;
         text_hp.text = "生命值: " + new string('❤', HP);
         text_show_score.enabled = false; // 隱藏分數顯示
-        text_score.text = "☠:  " + score;
         score = 0; // 重置分數
+        text_score.text = "☠:  " + score;
+
 
     }
     public void pause_game()
@@ -244,10 +259,11 @@ public class LevelManger : MonoBehaviour
     void GameOver()
     {
 
-        PlayBGM(bgmGameOver, 0.4f);
+        PlayBGM(bgmGameOver, 0.6f); // 遊戲結束時播放背景音樂
         status = 2;
         ui_Over.SetActive(true);
         ui_again.SetActive(true);
+
 
         text_show_score.text = "☠: " + score;
         text_show_score.enabled = true;
@@ -278,9 +294,12 @@ public class LevelManger : MonoBehaviour
     {
         if (bgmSource != null && clip != null)
         {
-            bgmSource.Stop();
-            bgmSource.clip = clip;
-            bgmSource.volume = volume;
+            if (bgmSource.clip != clip)
+            {
+                bgmSource.Stop();
+                bgmSource.clip = clip;
+            }
+            bgmSource.volume = volume; // 控制音量
             bgmSource.Play();
         }
     }
@@ -295,7 +314,6 @@ public class LevelManger : MonoBehaviour
         AudioSource audioSource = sfxPlayer.GetComponent<AudioSource>();
         if (audioSource == null) return;
 
-        // 從 Canvas 下去抓所有 UI 按鈕（包含非啟用）
         Transform canvasRoot = GameObject.Find("Canvas")?.transform;
         if (canvasRoot == null) return;
 
@@ -303,9 +321,19 @@ public class LevelManger : MonoBehaviour
 
         foreach (Button btn in buttons)
         {
-            // 避免重複註冊
-            btn.onClick.RemoveListener(() => audioSource.PlayOneShot(uiClickSound));
-            btn.onClick.AddListener(() => audioSource.PlayOneShot(uiClickSound));
+            // 只加一次聲音，避免重複播放
+            if (!buttonsWithSound.Contains(btn))
+            {
+                btn.onClick.AddListener(() =>
+                {
+                    if (audioSource != null && uiClickSound != null)
+                    {
+                        audioSource.PlayOneShot(uiClickSound, 0.6f); // 可微調音量
+                    }
+                });
+
+                buttonsWithSound.Add(btn);
+            }
         }
     }
 
