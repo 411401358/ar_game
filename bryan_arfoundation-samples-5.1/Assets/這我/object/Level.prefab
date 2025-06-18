@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5011326873462566459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9187286811618268025}
+  - component: {fileID: 6001784718263371779}
+  m_Layer: 0
+  m_Name: Level
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9187286811618268025
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011326873462566459}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6001784718263371779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011326873462566459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e86dd3f92cad6a4893412383fd54b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chicken: {fileID: 5719642477239464565, guid: 0544ff02255e77d4bbf9c27bd3395240, type: 3}
+  mainCamera: {fileID: 0}
+  minDistance: 6
+  maxDistance: 10
+  horizontalRange: 3
+  verticalRange: 3
+  pauseMenuUI: {fileID: 0}
+  ui_start_button: {fileID: 0}
+  ui_start: {fileID: 0}
+  ui_Over: {fileID: 0}
+  ui_again: {fileID: 0}
+  text_hp: {fileID: 0}
+  text_score: {fileID: 0}
+  text_show_score: {fileID: 0}
+  timespace: 2
+  ui_shoot: {fileID: 0}
+  ui_pause: {fileID: 0}
+  bgmSource: {fileID: 0}
+  bgmInGame: {fileID: 8300000, guid: f49863614db2257468aa6dbfde9ac163, type: 3}
+  bgmGameOver: {fileID: 8300000, guid: b5df1d9a97ef7de42a92d9f47718e892, type: 3}
+  bgmMenu: {fileID: 8300000, guid: b2cb3b1d9aecc064dbfa43f220b520bb, type: 3}
+  uiClickSound: {fileID: 8300000, guid: a319fa7ac857a5f40ab3cd275f9261a8, type: 3}
+  uiAudioTag: SFX
+  shootManager: {fileID: 0}
