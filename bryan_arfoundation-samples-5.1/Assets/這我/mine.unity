@@ -1564,7 +1564,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 6142732724416986170, guid: 158584ba86bc3dd429131abe31833e7a,
+      objectReference: {fileID: -6478536213147159724, guid: 7686f9f40dc9cab4b8bf902d7d61e2e1,
         type: 3}
     - target: {fileID: 6063623447089033509, guid: 0544ff02255e77d4bbf9c27bd3395240,
         type: 3}
@@ -1675,7 +1675,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -4082184580441198711, guid: 158584ba86bc3dd429131abe31833e7a,
+      objectReference: {fileID: -2477511411847689622, guid: 7686f9f40dc9cab4b8bf902d7d61e2e1,
         type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
